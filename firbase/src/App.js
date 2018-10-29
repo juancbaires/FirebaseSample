@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import Note from './Note/Note';
 import NoteForm from './NoteForm/NoteForm';
-import Login from "./Login/Login"
-import Signup from "./Signup/Signup"
+// import Login from "./Login/Login"
+// import Signup from "./Signup/Signup"
 import { DB_CONFIG } from './Config/Config';
-import firebase from 'firebase/app';
+import firedatabase from 'firebase/app';
 import 'firebase/database';
 import './App.css';
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth"
-
+import firebase from "firebase"
 
 
 class App extends Component {
@@ -17,7 +17,7 @@ class App extends Component {
     this.addnote = this.addnote.bind(this);
     this.removeNote = this.removeNote.bind(this);
 
-    this.app = firebase.initializeApp(DB_CONFIG);
+    this.app = firedatabase.initializeApp(DB_CONFIG);
     this.database = this.app.database().ref().child('notes');
 
     // We're going to setup the React state of our component
@@ -85,7 +85,9 @@ class App extends Component {
         {this.state.isSignedIn ? (
           <span>
             <h1 className="heading">React & Firebase To-Do List</h1>
-
+            <div className="notesFooter">
+              <NoteForm addnote={this.addnote} />
+            </div>
             <div className="notesBody">
               {
                 this.state.notes.map((note) => {
@@ -97,9 +99,6 @@ class App extends Component {
                   )
                 })
               }
-            </div>
-            <div className="notesFooter">
-              <NoteForm addnote={this.addnote} />
             </div>
             <h2>Signed In!</h2>
             <button onClick={() => firebase.auth().signOut()}>Sign out!</button>
